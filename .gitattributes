@@ -1,0 +1,22 @@
+# Python
+*.py text eol=lf
+
+# Shell
+*.sh text eol=lf
+
+# Configs
+*.conf text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Text resources
+*.txt text eol=lf
+*.md text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.gif binary
+*.woff binary
+*.woff2 binary
