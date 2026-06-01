@@ -5,6 +5,7 @@ from datetime import datetime
 import threading
 import asyncio
 import slixmpp
+import getpass
 
 COMMANDS = {
     "help": "Show available commands",
@@ -81,27 +82,7 @@ class ScaraShell(cmd.Cmd):
 
     prompt = "user@scara:~$ "
 
-    def __init__(self):
-        super().__init__()
-        self.user = None
-        self.authenticated = False
-
-    def do_login(self, arg):
-        """login <username>"""
-        username = arg.strip()
-        if not username:
-            print("Usage: login <username>")
-            return
-
-        password = getpass.getpass("Password: ")
-
-        if username == "adam" and password == "KeyToHeart":
-            self.user = username
-            self.authenticated = True
-            self.prompt = f"admin@scara:~$ "
-            print("Access granted.")
-        else:
-            print("Access denied.")
+    CURRENT_USER = getpass.getuser()
 
     def send_request(self, action):
         message = (
@@ -131,7 +112,7 @@ class ScaraShell(cmd.Cmd):
 
     def do_whoami(self, arg):
         """Show current user"""
-        print(self.user if self.authenticated else "guest")
+        print(getpass.getuser())
 
     def do_status(self, arg):
         """Show system status"""
