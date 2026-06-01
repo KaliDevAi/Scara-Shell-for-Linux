@@ -80,14 +80,15 @@ class ScaraShell(cmd.Cmd):
  Enter "exit" to close
 """
 
-    prompt = "user@scara:~$ "
-
-    CURRENT_USER = getpass.getuser()
+    def __init__(self):
+        super().__init__()
+        self.user = getpass.getuser()
+        self.prompt = f"{self.user}@scara:~$ "
 
     def send_request(self, action):
         message = (
             "SCARA CORE\n\n"
-            f"Operator: {self.user if self.authenticated else 'guest'}\n"
+            f"Operator: {self.user}\n"
             f"Request: {action}\n"
             f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         )
@@ -109,33 +110,20 @@ class ScaraShell(cmd.Cmd):
 
         print("")
 
-
     def do_whoami(self, arg):
-        """Show current user"""
-        print(getpass.getuser())
+        print(self.user)
 
     def do_status(self, arg):
-        """Show system status"""
         print("MIND: ONLINE")
         print("LINK: STABLE")
         print("SECURITY: OBSERVING")
         print("TIME:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     def do_scan(self, arg):
-        """Scan virtual system"""
         print("Scanning...")
         print("[OK] /core")
         print("[LOCKED] /sealed")
         print("[UNKNOWN] /abyss")
-
-    def do_unlock(self, arg):
-        """Unlock restricted area"""
-        if not self.authenticated:
-            print("Permission denied.")
-            return
-
-        print("Seal accepted.")
-        print("Access to /sealed granted.")
 
     def do_hug(self, arg):
         self.send_request("hug")
@@ -153,7 +141,6 @@ class ScaraShell(cmd.Cmd):
         self.send_request("electric shock")
 
     def do_exit(self, arg):
-        """Exit shell"""
         print("Connection closed.")
         return True
 
@@ -163,7 +150,6 @@ class ScaraShell(cmd.Cmd):
 
     def default(self, line):
         print(f"Unknown command: {line}")
-
 
 if __name__ == "__main__":
     ScaraShell().cmdloop()
